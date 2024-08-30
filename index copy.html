@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confetti Effect</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+    }
+    .confetti {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    #button {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <button id="button">Click me!</button>
+  <script>
+    function getRandomEmoji() {
+      const emojis = [
+        '🎉', '🎊', '👏', '😄', '🎁',
+        '👍', '💥', '🔥', '🎈', '😆',
+        '🤩', '🎉', '👫', '💕', '😊',
+        '👀', '😍', '🤯', '🎊', '👏'
+      ];
+      return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+
+    function createConfetti() {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.innerHTML = getRandomEmoji();
+
+      // 초기 속도 설정
+      const initialVelocity = Math.random() * 20 + 5;
+      let velocity = initialVelocity;
+      let gravity = Math.random() * 0.2 + 0.05;
+
+      // 초기 위치 설정
+      confetti.style.top = `${Math.random() * 100}%`;
+      confetti.style.left = `${Math.random() * 100}%`;
+
+      // 애니메이션 설정
+      function animate() {
+        velocity += gravity;
+        confetti.style.top = `${confetti.offsetTop + velocity}px`;
+        if (confetti.offsetTop > window.innerHeight) {
+          confetti.remove();
+        } else {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      animate();
+
+      document.body.appendChild(confetti);
+    }
+
+    // 버튼 클릭 이벤트
+    document.getElementById('button').addEventListener('click', createConfetti);
+  </script>
+</body>
+</html>

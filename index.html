@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>콘페티 효과</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #confetti-button {
+      font-size: 24px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #FF69B4;
+      color: #FFFFFF;
+      cursor: pointer;
+      position: relative;
+    }
+    .confetti-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .confetti {
+      position: absolute;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <button id="confetti-button">🎉 Click me! 🎉</button>
+  <div class="confetti-container"></div>
+  <script>
+    // 콘페티 컨테이너 요소 가져오기
+    const confettiContainer = document.querySelector('.confetti-container');
+    const confettiButton = document.querySelector('#confetti-button');
+
+    // 랜덤 이모지 생성 함수
+    function getRandomEmoji() {
+      const emojis = ['🎉', '🎊', '👏', '😄', '🎁'];
+      return emojis[Math.floor(Math.random() * emojis.length)];
+    }
+
+    // 콘페티 생성 함수
+    function createConfetti() {
+      const confetti = document.createElement('span');
+      confetti.className = 'confetti';
+      confetti.textContent = getRandomEmoji();
+      confetti.style.fontSize = `${Math.random() * 24 + 12}px`;
+      confettiContainer.appendChild(confetti);
+
+      // 랜덤한 초기 위치 설정
+      confetti.style.left = `${Math.random() * window.innerWidth}px`;
+      confetti.style.top = `${Math.random() * window.innerHeight}px`;
+
+      // 초기 속도 설정
+      const initialVelocity = Math.random() * 10 + 5;
+      let velocity = initialVelocity;
+      let gravity = 0.1;
+
+      // 애니메이션 함수
+      function animate() {
+        // 속도 업데이트
+        velocity -= gravity;
+
+        // 위치 업데이트
+        confetti.style.top = `${confetti.offsetTop - velocity}px`;
+
+        // 바닥에 닿으면 삭제
+        if (confetti.offsetTop > window.innerHeight) {
+          confetti.remove();
+        } else {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      // 초기 애니메이션 시작
+      animate();
+    }
+
+    // 버튼 클릭 이벤트 리스너 추가
+    confettiButton.addEventListener('click', () => {
+      for (let i = 0; i < 100; i++) {
+        createConfetti();
+      }
+    });
+  </script>
+</body>
+</html>
